@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import 'dart:core';
 
 class FormPage extends StatefulWidget {
   const FormPage({Key? key}) : super(key: key);
@@ -8,17 +11,18 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-
   late TextEditingController _controller;
+  DateTime? _day;
+  String? day = "Hola";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _controller = TextEditingController();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _controller.dispose();
     super.dispose();
   }
@@ -30,7 +34,9 @@ class _FormPageState extends State<FormPage> {
       body: SafeArea(
         child: Column(children: [
           _Header(),
-          const Spacer(flex: 1,),
+          const Spacer(
+            flex: 1,
+          ),
           Container(
             width: 325,
             height: 300,
@@ -47,31 +53,71 @@ class _FormPageState extends State<FormPage> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                SizedBox(
+              children: [
+                const SizedBox(
                   width: 300,
                   child: TextField(
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
-                      labelText: "Name",
-                      hintText: "Introduce your name..."
-                    ),
+                        labelText: "Name", hintText: "Introduce your name..."),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 300,
                   child: TextField(
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                         labelText: "Telephone",
-                        hintText: "Introduce your telephone..."
-                    ),
+                        hintText: "Introduce your telephone..."),
+                  ),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        child: ElevatedButton(
+                            child: const Icon(Icons.calendar_today),
+                            style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.all(Colors.green),
+                            ),
+                            onPressed: () {
+                              showDatePicker(
+
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(2099)
+                              ).then((pickedValue){
+                                if(pickedValue != null){
+                                  debugPrint("Ok => ${pickedValue.weekday}");
+                                  _day = pickedValue;
+                                  DateFormat dateFormat = DateFormat("dd MMMM yyyy");
+                                  day = dateFormat.format(_day!);
+                                  setState(() {});
+                                }
+                                else{
+                                  debugPrint("Cancelled :(");
+                                }
+                              });
+                            }
+                        ),
+                      ),
+                      Text(day!,
+
+                      )
+                    ],
                   ),
                 )
               ],
             ),
           ),
-          const Spacer(flex: 3,),
+          const Spacer(
+            flex: 3,
+          ),
         ]),
       ),
     );
@@ -127,11 +173,11 @@ class MyPaint extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path()
-      ..moveTo(0, 100)
-      ..lineTo(0, 0)
-      ..lineTo(size.width, 0)
+      ..moveTo(0, 0)
+      ..lineTo(0, 100)
+      ..lineTo(size.width / 2, size.height + 25)
       ..lineTo(size.width, 100)
-      ..lineTo(210, 125);
+      ..lineTo(size.width, 0);
 
     canvas.drawPath(path, paint);
   }
