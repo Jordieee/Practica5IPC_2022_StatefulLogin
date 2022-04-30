@@ -32,27 +32,31 @@ class _FormPageState extends State<FormPage> {
           const Spacer(
             flex: 1,
           ),
-          ElevatedButton(
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) =>
-                      _createAlert(context, name, phone, birthday, gender)),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green),
-              ),
-              child: const Text(
-                "Confirm Data",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 15),
-              )),
+          _Button(context),
           const Spacer(
             flex: 3,
           ),
         ]),
       ),
     );
+  }
+
+  ElevatedButton _Button(BuildContext context) {
+    return ElevatedButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (context) =>
+                    _createAlert(context, name, phone, birthday, gender)),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.green),
+            ),
+            child: const Text(
+              "Confirm Data",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15),
+            ));
   }
 
   Container _Body(BuildContext context) {
@@ -309,7 +313,14 @@ AlertDialog _createAlert(BuildContext context, String name, String phone, String
             onPressed: () => Navigator.of(context).pop(),
             child: const Text("Cancel")),
         TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Person person = Person(name: name, phone: phone, birthday: birthday, gender: gender);
+              var route = MaterialPageRoute(builder: (context) => CardPage(
+                person: person,
+              ));
+              Navigator.of(context).pop();
+              Navigator.of(context).push(route);
+            },
             child: const Text("Accept")),
       ],
     );
