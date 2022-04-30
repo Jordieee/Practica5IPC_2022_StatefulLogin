@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'dart:core';
 
 class FormPage extends StatefulWidget {
@@ -13,7 +12,8 @@ class FormPage extends StatefulWidget {
 class _FormPageState extends State<FormPage> {
   late TextEditingController _controller;
   DateTime? _day;
-  String? day = "Hola";
+  String? day = "No birthday selected";
+  String? gender = "No gender selected";
 
   @override
   void initState() {
@@ -37,90 +37,143 @@ class _FormPageState extends State<FormPage> {
           const Spacer(
             flex: 1,
           ),
-          Container(
-            width: 325,
-            height: 300,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.8),
-                  spreadRadius: 10,
-                  blurRadius: 20,
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(
-                  width: 300,
-                  child: TextField(
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                        labelText: "Name", hintText: "Introduce your name..."),
-                  ),
-                ),
-                const SizedBox(
-                  width: 300,
-                  child: TextField(
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                        labelText: "Telephone",
-                        hintText: "Introduce your telephone..."),
-                  ),
-                ),
-                SizedBox(
-                  width: 300,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        child: ElevatedButton(
-                            child: const Icon(Icons.calendar_today),
-                            style: ButtonStyle(
-                              backgroundColor:
-                              MaterialStateProperty.all(Colors.green),
-                            ),
-                            onPressed: () {
-                              showDatePicker(
-
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2099)
-                              ).then((pickedValue){
-                                if(pickedValue != null){
-                                  debugPrint("Ok => ${pickedValue.weekday}");
-                                  _day = pickedValue;
-                                  DateFormat dateFormat = DateFormat("dd MMMM yyyy");
-                                  day = dateFormat.format(_day!);
-                                  setState(() {});
-                                }
-                                else{
-                                  debugPrint("Cancelled :(");
-                                }
-                              });
-                            }
-                        ),
-                      ),
-                      Text(day!,
-
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+          _Body(context),
           const Spacer(
             flex: 3,
           ),
         ]),
       ),
     );
+  }
+
+  Container _Body(BuildContext context) {
+    return Container(
+          width: 325,
+          height: 300,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.8),
+                spreadRadius: 10,
+                blurRadius: 20,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const SizedBox(
+                width: 300,
+                child: TextField(
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                      labelText: "Name", hintText: "Introduce your name..."),
+                ),
+              ),
+              const SizedBox(
+                width: 300,
+                child: TextField(
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                      labelText: "Telephone",
+                      hintText: "Introduce your telephone..."),
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      height: 40,
+                      child: ElevatedButton(
+                          child: const Icon(Icons.calendar_today),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green),
+                          ),
+                          onPressed: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2099))
+                                .then((pickedValue) {
+                              if (pickedValue != null) {
+                                _day = pickedValue;
+                                DateFormat dateFormat =
+                                    DateFormat("dd MMMM yyyy");
+                                day = dateFormat.format(_day!);
+                                setState(() {});
+                              } else {
+                                debugPrint("Cancelled :(");
+                              }
+                            });
+                          }),
+                    ),
+                    Text(
+                      day!,
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text("Gender: "),
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Other"),
+                            Radio(
+                                value: "Other",
+                                groupValue: gender,
+                                onChanged: (String? newGender) {
+                                  setState(() {
+                                    gender = newGender;
+                                  });
+                                }),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("F"),
+                            Radio(
+                                value: "F",
+                                groupValue: gender,
+                                onChanged: (String? newGender) {
+                                  setState(() {
+                                    gender = newGender;
+                                  });
+                                }),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("M"),
+                            Radio(
+                                value: "M",
+                                groupValue: gender,
+                                onChanged: (String? newGender) {
+                                  setState(() {
+                                    gender = newGender;
+                                  });
+                                }),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
   }
 
   //Header with CustomPainter
