@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ipc_jlincar_p5/card_page.dart';
+import 'package:ipc_jlincar_p5/person_model.dart';
 import 'dart:core';
 
 class FormPage extends StatefulWidget {
@@ -11,29 +12,11 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-  late TextEditingController _controllerName;
-  late TextEditingController _controllerPhone;
-
   DateTime? _day;
-  String? name;
-  String? phone;
-  String? day = "No birthday selected";
-  String? gender = "No gender selected";
-
-  @override
-  void initState() {
-    super.initState();
-    _controllerName = TextEditingController();
-    _controllerPhone = TextEditingController();
-
-  }
-
-  @override
-  void dispose() {
-    _controllerName.dispose();
-    _controllerPhone.dispose();
-    super.dispose();
-  }
+  String name = "No name selected";
+  String phone = "No phone selected";
+  String birthday = "No birthday selected";
+  String gender = "No gender selected";
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +35,8 @@ class _FormPageState extends State<FormPage> {
           ElevatedButton(
               onPressed: () => showDialog(
                   context: context,
-                  builder: (context) => _createAlert(context)),
+                  builder: (context) =>
+                      _createAlert(context, name, phone, birthday, gender)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.green),
               ),
@@ -92,10 +76,11 @@ class _FormPageState extends State<FormPage> {
           SizedBox(
             width: 300,
             child: TextField(
-              controller: _controllerName,
               keyboardType: TextInputType.name,
-              onEditingComplete: () {
-                setState(() {});
+              onChanged: (newName) {
+                setState(() {
+                  name = newName;
+                });
               },
               decoration: const InputDecoration(
                   labelText: "Name",
@@ -109,10 +94,11 @@ class _FormPageState extends State<FormPage> {
           SizedBox(
             width: 300,
             child: TextField(
-              controller: _controllerPhone,
               keyboardType: TextInputType.name,
-              onEditingComplete: () {
-                setState(() {});
+              onChanged: (newPhone) {
+                setState(() {
+                  phone = newPhone;
+                });
               },
               decoration: const InputDecoration(
                   labelText: "Telephone",
@@ -146,7 +132,7 @@ class _FormPageState extends State<FormPage> {
                           if (pickedValue != null) {
                             _day = pickedValue;
                             DateFormat dateFormat = DateFormat("dd MMMM yyyy");
-                            day = dateFormat.format(_day!);
+                            birthday = dateFormat.format(_day!);
                             setState(() {});
                           } else {
                             debugPrint("Cancelled :(");
@@ -155,7 +141,7 @@ class _FormPageState extends State<FormPage> {
                       }),
                 ),
                 Text(
-                  day!,
+                  birthday,
                 )
               ],
             ),
@@ -176,7 +162,7 @@ class _FormPageState extends State<FormPage> {
                             groupValue: gender,
                             onChanged: (String? newGender) {
                               setState(() {
-                                gender = newGender;
+                                gender = newGender!;
                               });
                             }),
                       ],
@@ -189,7 +175,7 @@ class _FormPageState extends State<FormPage> {
                             groupValue: gender,
                             onChanged: (String? newGender) {
                               setState(() {
-                                gender = newGender;
+                                gender = newGender!;
                               });
                             }),
                       ],
@@ -202,7 +188,7 @@ class _FormPageState extends State<FormPage> {
                             groupValue: gender,
                             onChanged: (String? newGender) {
                               setState(() {
-                                gender = newGender;
+                                gender = newGender!;
                               });
                             }),
                       ],
@@ -257,10 +243,66 @@ class _FormPageState extends State<FormPage> {
   }
 }
 
-AlertDialog _createAlert(BuildContext context) => AlertDialog(
+AlertDialog _createAlert(BuildContext context, String name, String phone, String birthday, String gender) =>
+    AlertDialog(
       title: const Text("Your data"),
-      content: Column(
-        children: const [Text("Name")],
+      content: SizedBox(
+        width: 300,
+        height: 200,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Name:", style: TextStyle(fontSize: 15)),
+              Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                width: 50,
+                height: 5,
+                color: Colors.green,
+              ),
+            ],
+          ),
+          const Spacer(flex: 1,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Telephone:", style: TextStyle(fontSize: 15)),
+              Text(phone, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                width: 50,
+                height: 5,
+                color: Colors.green,
+              ),
+            ],
+          ),
+          const Spacer(flex: 1,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Birthday:", style: TextStyle(fontSize: 15)),
+              Text(birthday, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                width: 50,
+                height: 5,
+                color: Colors.green,
+              ),
+            ],
+          ),
+          const Spacer(flex: 1,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Gender:", style: TextStyle(fontSize: 15)),
+              Text(gender, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                width: 50,
+                height: 5,
+                color: Colors.green,
+              ),
+            ],
+          ),
+
+        ]),
       ),
       actions: [
         TextButton(

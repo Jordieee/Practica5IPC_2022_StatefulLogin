@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ipc_jlincar_p5/form_page.dart';
+import 'package:ipc_jlincar_p5/person_model.dart';
 
 
 
@@ -11,3 +12,4 @@ class CardPage extends StatelessWidget {
     return Container();
   }
 }
+
