@@ -33,7 +33,7 @@ class CardPage extends StatelessWidget {
                 flex: 1,
               ),
               Container(
-                  width: double.infinity,
+                  width: 300,
                   height: 250,
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle,
@@ -117,7 +117,7 @@ class CardPage extends StatelessWidget {
               flex: 1,
             ),
             Container(
-                height: double.infinity,
+                height: 250,
                 width: 250,
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle,
@@ -125,6 +125,7 @@ class CardPage extends StatelessWidget {
                         fit: BoxFit.fill,
                         image: AssetImage(
                           "assets/img/cat.png",
+
                         )))),
             const Spacer(
               flex: 1,
