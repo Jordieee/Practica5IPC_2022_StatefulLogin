@@ -58,8 +58,9 @@ class CardPage extends StatelessWidget {
                       person.name,
                       style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30
+                      ),
                     ),
                     const Spacer(
                       flex: 3,
